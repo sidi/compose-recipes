@@ -1,0 +1,9 @@
+psycopg2-binary
+confluent-kafka
+pandas
+numpy
+requests
+beautifulsoup4
+geoip2
+dbt-core
+dbt-postgres

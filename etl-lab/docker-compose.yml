@@ -1,0 +1,82 @@
+services:
+
+  pyetlenv:
+    container_name: pyetlenv
+    build: .
+    command: sh -c "python3 -m http.server 8000"
+    volumes:
+      - ./work:/work
+
+  etldb:
+    container_name: etldb
+    image: postgres:14-alpine
+    ports:
+      - 127.0.0.1:5432:5432
+    environment:
+      - POSTGRES_DB=etldb
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin12345
+      - POSTGRES_INITDB_ARGS=--encoding=UTF-8 --lc-collate=C --lc-ctype=C
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d etldb"]
+      interval: 10s
+      timeout: 5s
+      retries: 5      
+
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4:latest
+    depends_on:
+      etldb:
+        condition: service_healthy
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@example.com
+      - PGADMIN_DEFAULT_PASSWORD=admin12345
+    ports:
+      - "127.0.0.1:8032:80"
+    volumes:
+      - ./data/pgadmin:/var/lib/pgadmin
+      - ./servers.json:/pgadmin4/servers.json:ro
+
+  etlkafka:
+    container_name: etlkafka
+    image: 'apache/kafka:latest'
+    environment:
+      - KAFKA_PROCESS_ROLES=broker,controller
+      - KAFKA_NODE_ID=0
+      - KAFKA_LISTENERS=PLAINTEXT://:9092,CONTROLLER://:9093
+      - KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
+      - KAFKA_CONTROLLER_QUORUM_VOTERS=0@etlkafka:9093
+      - KAFKA_CONTROLLER_LISTENER_NAMES=CONTROLLER
+      - KAFKA_NUM_PARTITIONS=2
+    volumes:
+      - ./data/kafka:/var/lib/kafka/data
+    ports:
+      - 127.0.0.1:9092:9092
+      - 127.0.0.1:9094:9094
+
+  kafka-ui:
+    container_name: kafka-ui
+    image: provectuslabs/kafka-ui:latest
+    ports:
+      - 127.0.0.1:8080:8080
+    environment:
+      - KAFKA_CLUSTERS_0_NAME=local
+      - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=etlkafka:9092
+      #- KAFKA_CLUSTERS_0_READONLY=true # Optional
+    depends_on:
+      - etlkafka
+
+  nifi:
+    image: apache/nifi:latest
+    container_name: nifi
+    ports:
+      - "127.0.0.1:8443:8443"
+    environment:
+      - SINGLE_USER_CREDENTIALS_USERNAME=admin
+      - SINGLE_USER_CREDENTIALS_PASSWORD=adminadmin123
+    volumes:
+      - ./data/nifi/data:/opt/nifi/nifi-current/data/
+      - ./data/nifi/logs:/opt/nifi/nifi-current/logs

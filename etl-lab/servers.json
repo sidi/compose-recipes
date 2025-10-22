@@ -1,0 +1,13 @@
+{
+  "Servers": {
+    "1": {
+      "Name": "etldb",
+      "Group": "Local",
+      "Host": "etldb",
+      "Port": 5432,
+      "MaintenanceDB": "etldb",
+      "Username": "admin",
+      "SSLMode": "disable"
+    }
+  }
+}
