@@ -1,0 +1,16 @@
+*~
+.~*
+*.DS_Store
+._*
+*.log
+*/test/*
+*/tmp/*
+*cache*
+*build
+tmp
+build
+log
+test
+data
+work
+
