@@ -8,7 +8,9 @@
 ## For the first time run: 
 ```
 # from the current directory
-sh init.sh 
+sh init.sh # In NIx OS
+# OR in Windows OS
+pwsh -File .\setup-env.ps1
 # then run
 docker compose up -d --build
 ```
