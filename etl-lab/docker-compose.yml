@@ -85,3 +85,27 @@ services:
     volumes:
       - ./data/nifi/data:/opt/nifi/nifi-current/data/
       - ./data/nifi/logs:/opt/nifi/nifi-current/logs
+
+  prefect-server:
+    image: prefecthq/prefect:2-python3.11
+    container_name: prefect-server
+    environment:
+      PREFECT_SERVER_API_HOST: 0.0.0.0
+    ports:
+      - "127.0.0.1:14200:4200"
+    command: prefect server start --host 0.0.0.0 --port 4200
+
+  prefect-runner:
+    build: ./prefect
+    container_name: prefect-runner
+    depends_on:
+      - prefect-server
+    environment:
+      PREFECT_API_URL: http://prefect-server:4200/api
+      SQLITE_PATH: /shared/sqlite/etl.db
+      RUN_DIR: /shared/runs
+    volumes:
+      - ./prefect/flows:/flows
+      - ./work:/work
+      - ./data/prefect:/shared
+    command: bash -lc "sleep infinity"

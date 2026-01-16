@@ -23,7 +23,8 @@ $Dirs = @(
   'data\nifi\data',
   'data\nifi\logs',
   'data\pgadmin',
-  'work'
+  'data/prefect/sqlite',
+  'data/prefect/runs'
 )
 
 Write-Host "Creating directories under: $($Base.Path)"

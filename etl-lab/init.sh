@@ -8,7 +8,8 @@ data/kafka
 data/nifi/data
 data/nifi/logs
 data/pgadmin
-work
+data/prefect/sqlite
+data/prefect/runs
 "
 
 echo "Creating directories..."
