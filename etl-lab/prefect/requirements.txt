@@ -3,3 +3,8 @@ beautifulsoup4
 pandas
 gspread
 lxml
+dbt-core
+dbt-postgres
+psycopg2-binary
+confluent-kafka
+sqlalchemy
