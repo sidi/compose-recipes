@@ -1,0 +1,48 @@
+services:
+  metastore-db:
+    image: postgres:14
+    container_name: hive-metastore-db
+    environment:
+      POSTGRES_DB: hive_metastore
+      POSTGRES_USER: hive
+      POSTGRES_PASSWORD: hive_password
+    volumes:
+      - metastore_db:/var/lib/postgresql/data
+    ports:
+      - "127.0.0.1:5432:5432"
+
+  hadoop-hive:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: hadoop-hive-single
+    hostname: hadoop-hive
+    depends_on:
+      - metastore-db
+    environment:
+      HADOOP_HOME: /opt/hadoop
+      HIVE_HOME: /opt/hive
+      JAVA_HOME: /usr/lib/jvm/java-8-openjdk-amd64
+      HIVE_METASTORE_DB_HOST: metastore-db
+      HIVE_METASTORE_DB_PORT: "5432"
+      HIVE_METASTORE_DB_NAME: hive_metastore
+      HIVE_METASTORE_DB_USER: hive
+      HIVE_METASTORE_DB_PASSWORD: hive_password
+    ports:
+      - "127.0.0.1:9870:9870"
+      - "127.0.0.1:8088:8088"
+      - "127.0.0.1:19000:9000"
+      - "127.0.0.1:10000:10000"
+      - "127.0.0.1:9083:9083"
+    volumes:
+      - hdfs_namenode:/home/hdoop/dfsdata/namenode
+      - hdfs_datanode:/home/hdoop/dfsdata/datanode
+      - hadoop_tmp:/home/hdoop/tmpdata
+      - ./data:/data
+    restart: unless-stopped
+
+volumes:
+  metastore_db:
+  hdfs_namenode:
+  hdfs_datanode:
+  hadoop_tmp:

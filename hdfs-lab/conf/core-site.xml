@@ -1,0 +1,26 @@
+<configuration>
+  <property>
+    <name>hadoop.tmp.dir</name>
+    <value>/home/hdoop/tmpdata</value>
+  </property>
+  <property>
+    <name>fs.defaultFS</name>
+    <value>hdfs://hadoop-hive:9000</value>
+  </property>
+  <property>
+    <name>hadoop.proxyuser.hdoop.groups</name>
+    <value>*</value>
+  </property>
+  <property>
+    <name>hadoop.proxyuser.hdoop.hosts</name>
+    <value>*</value>
+  </property>
+  <property>
+    <name>hadoop.proxyuser.server.hosts</name>
+    <value>*</value>
+  </property>
+  <property>
+    <name>hadoop.proxyuser.server.groups</name>
+    <value>*</value>
+  </property>
+</configuration>

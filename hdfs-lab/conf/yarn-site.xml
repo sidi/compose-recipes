@@ -1,0 +1,72 @@
+<configuration>
+  <property>
+    <name>yarn.nodemanager.aux-services</name>
+    <value>mapreduce_shuffle</value>
+  </property>
+  <property>
+    <name>yarn.nodemanager.aux-services.mapreduce.shuffle.class</name>
+    <value>org.apache.hadoop.mapred.ShuffleHandler</value>
+  </property>
+
+  <property>
+    <name>yarn.resourcemanager.address</name>
+    <value>hadoop-hive:8032</value>
+  </property>
+  <property>
+    <name>yarn.resourcemanager.scheduler.address</name>
+    <value>hadoop-hive:8030</value>
+  </property>
+  <property>
+    <name>yarn.resourcemanager.resource-tracker.address</name>
+    <value>hadoop-hive:8031</value>
+  </property>
+  <property>
+    <name>yarn.resourcemanager.admin.address</name>
+    <value>hadoop-hive:8033</value>
+  </property>
+  <property>
+    <name>yarn.resourcemanager.webapp.address</name>
+    <value>0.0.0.0:8088</value>
+  </property>
+
+  <property>
+    <name>yarn.resourcemanager.hostname</name>
+    <value>hadoop-hive</value>
+  </property>
+
+  <property>
+    <name>yarn.acl.enable</name>
+    <value>false</value>
+  </property>
+
+  <property>
+    <name>yarn.nodemanager.env-whitelist</name>
+    <value>JAVA_HOME,HADOOP_COMMON_HOME,HADOOP_HDFS_HOME,HADOOP_CONF_DIR,CLASSPATH_PERPEND_DISTCACHE,HADOOP_YARN_HOME,HADOOP_MAPRED_HOME</value>
+  </property>
+
+  <!-- Bind to all interfaces inside container -->
+  <property>
+    <name>yarn.resourcemanager.bind-host</name>
+    <value>0.0.0.0</value>
+  </property>
+  <property>
+    <name>yarn.nodemanager.bind-host</name>
+    <value>0.0.0.0</value>
+  </property>
+
+
+  <property>
+    <name>yarn.nodemanager.hostname</name>
+    <value>hadoop-hive</value>
+  </property>
+
+
+  <property>
+    <name>yarn.nodemanager.local-dirs</name>
+    <value>/home/hdoop/yarn/local</value>
+  </property>
+  <property>
+    <name>yarn.nodemanager.log-dirs</name>
+    <value>/home/hdoop/yarn/logs</value>
+  </property>
+</configuration>
